@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PanelColorChanger : MonoBehaviour
 {
-    public Renderer[] panelRenderers;
-    public float changeInterval = 1f;
+    [SerializeField] private Renderer[] panelRenderers;
+    [SerializeField] private float changeInterval = 1f;
 
     private Material[][] materials;
 

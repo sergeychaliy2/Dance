@@ -3,13 +3,14 @@ using System.Collections;
 
 public class ColorChanger : MonoBehaviour
 {
-    public float changeInterval = 2.0f;
-    public float minHue = 0f;
-    public float maxHue = 1f;
-    public float minSaturation = 0f;
-    public float maxSaturation = 1f;
-    public float minValue = 0f;
-    public float maxValue = 1f;
+    [Header("SETTINGS"), Space]
+    [SerializeField] private float changeInterval = 2.0f;
+    [SerializeField] private float minHue = 0f;
+    [SerializeField] private float maxHue = 1f;
+    [SerializeField] private float minSaturation = 0f;
+    [SerializeField] private float maxSaturation = 1f;
+    [SerializeField] private float minValue = 0f;
+    [SerializeField] private float maxValue = 1f;
 
     private Renderer objectRenderer;
 
