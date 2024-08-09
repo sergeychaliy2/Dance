@@ -35,7 +35,7 @@ public class ColorChanger : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Материал не имеет свойства '_Color'");
+               ErrorType.UnknownError.LogCustomError("Материал не имеет свойства '_Color'");
             }
 
             yield return new WaitForSeconds(changeInterval);

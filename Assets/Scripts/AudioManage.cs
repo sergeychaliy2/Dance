@@ -19,7 +19,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Список аудиоклипов пуст!");
+            ErrorType.AudioClipListNull.Log();
         }
     }
 
@@ -50,7 +50,7 @@ public class AudioManager : MonoBehaviour
     {
         if (audioClips.Count == 0)
         {
-            Debug.LogWarning("Список аудиоклипов пуст!");
+            ErrorType.UnknownError.LogCustomError("Список аудиоклипов пуст!");
             return;
         }
 
@@ -63,7 +63,7 @@ public class AudioManager : MonoBehaviour
     {
         if (audioClips.Count == 0)
         {
-            Debug.LogWarning("Список аудиоклипов пуст!");
+            ErrorType.UnknownError.LogCustomError("Список аудиоклипов пуст!");
             return;
         }
 
@@ -86,7 +86,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Список аудиоклипов пуст!");
+             ErrorType.UnknownError.LogCustomError("Список аудиоклипов пуст!");
         }
     }
 
