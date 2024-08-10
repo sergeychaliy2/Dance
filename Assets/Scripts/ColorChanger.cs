@@ -11,6 +11,8 @@ public class ColorChanger : MonoBehaviour
     [SerializeField] private float maxSaturation = 1f;
     [SerializeField] private float minValue = 0f;
     [SerializeField] private float maxValue = 1f;
+    [SerializeField] private float minIntensity = 1f;
+    [SerializeField] private float maxIntensity = 5f;
 
     private Renderer objectRenderer;
 
@@ -29,13 +31,16 @@ public class ColorChanger : MonoBehaviour
         while (true)
         {
             Color newColor = Random.ColorHSV(minHue, maxHue, minSaturation, maxSaturation, minValue, maxValue);
-            if (objectRenderer.material.HasProperty("_Color"))
+            float intensity = Random.Range(minIntensity, maxIntensity);
+            Color hdrColor = newColor * intensity;
+            if (objectRenderer.material.HasProperty("_EmissionColor"))
             {
-                objectRenderer.material.SetColor("_Color", newColor);
+                objectRenderer.material.SetColor("_EmissionColor", hdrColor);
+                objectRenderer.material.EnableKeyword("_EMISSION");
             }
             else
             {
-               ErrorType.UnknownError.LogCustomError("Материал не имеет свойства '_Color'");
+                Debug.LogError("Материал не имеет свойства '_EmissionColor'");
             }
 
             yield return new WaitForSeconds(changeInterval);

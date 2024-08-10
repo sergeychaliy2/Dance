@@ -406,10 +406,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4478637369130610297, guid: fc6cc5c56ef0ce4498d64b632d01ccb8, type: 3}
-      propertyPath: audioSources.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4561686314942691609, guid: fc6cc5c56ef0ce4498d64b632d01ccb8, type: 3}
       propertyPath: m_Name
       value: ObjectScene
@@ -453,14 +449,6 @@ PrefabInstance:
     - target: {fileID: 7230407007588593950, guid: fc6cc5c56ef0ce4498d64b632d01ccb8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7641625417280188055, guid: fc6cc5c56ef0ce4498d64b632d01ccb8, type: 3}
-      propertyPath: m_ValueUpdated.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7641625417280188055, guid: fc6cc5c56ef0ce4498d64b632d01ccb8, type: 3}
-      propertyPath: m_ValueUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
