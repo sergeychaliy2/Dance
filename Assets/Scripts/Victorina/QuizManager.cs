@@ -7,6 +7,7 @@ public class QuizManager : MonoBehaviour
     public Quiz quizCollection; // Ссылка на ScriptableObject с коллекцией викторин
     public Canvas referenceCanvas; // Канвас для справочного материала
     public TextMeshProUGUI referenceText; // TMP текст для справочного материала
+    public TextMeshProUGUI headerText; // TMP текст для заголовка викторины
     public Canvas quizCanvas; // Канвас для викторины с вопросами
     public TextMeshProUGUI questionText; // UI элемент для отображения текста вопроса
     public Button[] answerButtons; // Кнопки для выбора ответа
@@ -57,7 +58,12 @@ public class QuizManager : MonoBehaviour
     {
         if (quizSetIndex >= 0 && quizSetIndex < quizCollection.quizSets.Length)
         {
-            referenceText.text = quizCollection.quizSets[quizSetIndex].referenceMaterial;
+            QuizSet currentQuizSet = quizCollection.quizSets[quizSetIndex];
+
+            // Устанавливаем заголовок и справочный текст
+            headerText.text = currentQuizSet.setName;
+            referenceText.text = currentQuizSet.referenceMaterial;
+
             referenceCanvas.gameObject.SetActive(true); // Включаем канвас справочного материала
             quizCanvas.gameObject.SetActive(false); // Отключаем канвас викторины
 
@@ -72,6 +78,7 @@ public class QuizManager : MonoBehaviour
 
     void StartQuiz()
     {
+        // Переключение канвасов
         referenceCanvas.gameObject.SetActive(false);
         quizCanvas.gameObject.SetActive(true);
         LoadQuizSet(currentQuizSetIndex);
@@ -163,6 +170,7 @@ public class QuizManager : MonoBehaviour
 
     void NextQuizSet()
     {
+        // Отключаем канвас с вопросами после завершения текущей викторины
         quizCanvas.gameObject.SetActive(false);
 
         currentQuizSetIndex++;
@@ -170,17 +178,17 @@ public class QuizManager : MonoBehaviour
         if (currentQuizSetIndex < quizCollection.quizSets.Length)
         {
             Debug.Log($"Переход к следующей викторине через 10 секунд...");
-            Invoke("StartNextQuizSet", 10f);
+            Invoke("StartNextQuizSet", 10f); // Задержка в 10 секунд перед началом следующей викторины
         }
         else
         {
             Debug.Log("Все викторины в коллекции завершены!");
+            // Здесь можно реализовать логику завершения всех викторин, например, вернуться в меню
         }
     }
 
     void StartNextQuizSet()
     {
-        ShowReferenceMaterial(currentQuizSetIndex);
+        ShowReferenceMaterial(currentQuizSetIndex); // Показываем справочный материал для следующей викторины
     }
-
 }
