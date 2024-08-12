@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &655737643353954173
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7785061534083246105}
+  - component: {fileID: 8573869554493062668}
+  m_Layer: 0
+  m_Name: Run
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7785061534083246105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655737643353954173}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.4018074, y: 0.6249438, z: 18.603872}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8573869554493062668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655737643353954173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b1e77141efc2ec419bc6dc3b36ed404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quizCollection: {fileID: 11400000, guid: 42c0d3bf972eebd43a8cda396da80f4e, type: 2}
+  referenceCanvas: {fileID: 8557588847788957024, guid: 9acc5523ef154b741be06b8d89ea095e, type: 3}
+  referenceText: {fileID: 6401090499105389059, guid: dffc2910697c3a9468efa4548d484238, type: 3}
+  quizCanvas: {fileID: 213221311953856538, guid: 4792a3ddcab8d0d4cb0ab5ef83892947, type: 3}
+  questionText: {fileID: 713758014200244708, guid: 7fcb9d1bd51618340b5b8f3089ddb132, type: 3}
+  answerButtons:
+  - {fileID: 5650492414920004352, guid: 561ba35266db35f47b4c8f6480286aef, type: 3}
+  - {fileID: 25960806520305556, guid: 91909a4267d70744fb96d31507cea6bf, type: 3}
+  - {fileID: 6306797526947820396, guid: 893e9b1bc524ea841ad2c21824e08cbb, type: 3}
+  - {fileID: 6349733598378204586, guid: 8f30289d0d0a4294981187c6004dbe90, type: 3}
+  timerText: {fileID: 4517294750834385861, guid: 6b29165f4c34c3c409dee52b397c7ea4, type: 3}

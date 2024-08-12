@@ -1,27 +1,38 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Для использования TextMeshProUGUI
+using TMPro;
 
 public class QuizManager : MonoBehaviour
 {
-    public Quiz quiz; // Ссылка на ScriptableObject с викториной
+    public Quiz quizCollection; // Ссылка на ScriptableObject с коллекцией викторин
+    public Canvas referenceCanvas; // Канвас для справочного материала
+    public TextMeshProUGUI referenceText; // TMP текст для справочного материала
+    public Canvas quizCanvas; // Канвас для викторины с вопросами
     public TextMeshProUGUI questionText; // UI элемент для отображения текста вопроса
     public Button[] answerButtons; // Кнопки для выбора ответа
     public TextMeshProUGUI timerText; // TextMeshProUGUI элемент для отображения таймера
+    public Button okButton; // Кнопка "ОК" для перехода от справочного материала к вопросам
 
-    private int currentQuestionIndex = 0;
+    private int currentQuizSetIndex = 0; // Индекс текущей викторины в коллекции
+    private int currentQuestionIndex = 0; // Индекс текущего вопроса в викторине
     private Color correctColor = Color.green;
     private Color incorrectColor = Color.red;
     private Color defaultColor;
 
-    private float timePerQuestion = 20f; // Время на каждый вопрос (20 секунд)
     private float timeRemaining;
     private bool isTimerRunning;
 
     void Start()
     {
-        defaultColor = answerButtons[0].GetComponent<Image>().color;
-        DisplayQuestion();
+        if (quizCollection.quizSets.Length > 0)
+        {
+            defaultColor = answerButtons[0].GetComponent<Image>().color;
+            ShowReferenceMaterial(currentQuizSetIndex); // Сначала отображаем справочный материал
+        }
+        else
+        {
+            Debug.LogError("Нет доступных викторин в коллекции!");
+        }
     }
 
     void Update()
@@ -35,7 +46,6 @@ public class QuizManager : MonoBehaviour
             }
             else
             {
-                // Время вышло, переход к следующему вопросу
                 timeRemaining = 0;
                 isTimerRunning = false;
                 NextQuestion();
@@ -43,9 +53,49 @@ public class QuizManager : MonoBehaviour
         }
     }
 
+    void ShowReferenceMaterial(int quizSetIndex)
+    {
+        if (quizSetIndex >= 0 && quizSetIndex < quizCollection.quizSets.Length)
+        {
+            referenceText.text = quizCollection.quizSets[quizSetIndex].referenceMaterial;
+            referenceCanvas.gameObject.SetActive(true); // Включаем канвас справочного материала
+            quizCanvas.gameObject.SetActive(false); // Отключаем канвас викторины
+
+            okButton.onClick.RemoveAllListeners(); // Удаляем старые слушатели (если они есть)
+            okButton.onClick.AddListener(StartQuiz); // Добавляем слушатель для кнопки "ОК"
+        }
+        else
+        {
+            Debug.LogError("Неверный индекс викторины!");
+        }
+    }
+
+    void StartQuiz()
+    {
+        referenceCanvas.gameObject.SetActive(false);
+        quizCanvas.gameObject.SetActive(true);
+        LoadQuizSet(currentQuizSetIndex);
+    }
+
+    void LoadQuizSet(int quizSetIndex)
+    {
+        if (quizSetIndex >= 0 && quizSetIndex < quizCollection.quizSets.Length)
+        {
+            currentQuizSetIndex = quizSetIndex;
+            currentQuestionIndex = 0;
+            timeRemaining = quizCollection.quizSets[currentQuizSetIndex].timePerQuestion;
+            DisplayQuestion();
+        }
+        else
+        {
+            Debug.LogError("Неверный индекс викторины!");
+        }
+    }
+
     void DisplayQuestion()
     {
-        QuizQuestion currentQuestion = quiz.questions[currentQuestionIndex];
+        QuizSet currentQuizSet = quizCollection.quizSets[currentQuizSetIndex];
+        QuizQuestion currentQuestion = currentQuizSet.questions[currentQuestionIndex];
         questionText.text = currentQuestion.questionText;
 
         for (int i = 0; i < answerButtons.Length; i++)
@@ -65,23 +115,23 @@ public class QuizManager : MonoBehaviour
             }
         }
 
-        // Сброс таймера при показе нового вопроса
-        timeRemaining = timePerQuestion;
+        timeRemaining = currentQuizSet.timePerQuestion;
         isTimerRunning = true;
         UpdateTimerDisplay();
     }
 
     void UpdateTimerDisplay()
     {
-        // Отображение оставшегося времени в целых секундах
         timerText.text = $"{Mathf.CeilToInt(timeRemaining)}";
     }
 
     void CheckAnswer(int index)
     {
-        isTimerRunning = false; // Останавливаем таймер, когда ответ выбран
+        isTimerRunning = false;
 
-        if (index == quiz.questions[currentQuestionIndex].correctAnswerIndex)
+        QuizSet currentQuizSet = quizCollection.quizSets[currentQuizSetIndex];
+
+        if (index == currentQuizSet.questions[currentQuestionIndex].correctAnswerIndex)
         {
             Debug.Log("Correct!");
             answerButtons[index].GetComponent<Image>().color = correctColor;
@@ -97,16 +147,40 @@ public class QuizManager : MonoBehaviour
 
     void NextQuestion()
     {
+        QuizSet currentQuizSet = quizCollection.quizSets[currentQuizSetIndex];
         currentQuestionIndex++;
 
-        if (currentQuestionIndex < quiz.questions.Length)
+        if (currentQuestionIndex < currentQuizSet.questions.Length)
         {
             DisplayQuestion();
         }
         else
         {
-            Debug.Log("Quiz Complete!");
-            // Обработка завершения викторины
+            Debug.Log("Викторина завершена!");
+            NextQuizSet();
         }
     }
+
+    void NextQuizSet()
+    {
+        quizCanvas.gameObject.SetActive(false);
+
+        currentQuizSetIndex++;
+
+        if (currentQuizSetIndex < quizCollection.quizSets.Length)
+        {
+            Debug.Log($"Переход к следующей викторине через 10 секунд...");
+            Invoke("StartNextQuizSet", 10f);
+        }
+        else
+        {
+            Debug.Log("Все викторины в коллекции завершены!");
+        }
+    }
+
+    void StartNextQuizSet()
+    {
+        ShowReferenceMaterial(currentQuizSetIndex);
+    }
+
 }

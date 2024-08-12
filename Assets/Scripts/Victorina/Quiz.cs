@@ -1,8 +1,18 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewQuiz", menuName = "Quiz/New Quiz")]
+[CreateAssetMenu(fileName = "New Quiz Collection", menuName = "Quiz/Quiz Collection")]
 public class Quiz : ScriptableObject
 {
-    public string quizTitle;              // Название викторины
-    public QuizQuestion[] questions; // Список вопросов
+    public string quizName; // Название коллекции викторин
+    public QuizSet[] quizSets; // Массив викторин (каждая викторина имеет свои вопросы и справочный материал)
+}
+
+[System.Serializable]
+public class QuizSet
+{
+    public string setName; // Название конкретной викторины
+    public float timePerQuestion = 20f; // Время на каждый вопрос в этой викторине
+    [TextArea(3, 10)]
+    public string referenceMaterial; // Справочный материал для этой викторины
+    public QuizQuestion[] questions; // Массив вопросов в этой викторине
 }
