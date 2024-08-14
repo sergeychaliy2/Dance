@@ -598,7 +598,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2114977556990329486}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7724149712469521529}
+        m_TargetAssemblyTypeName: TextSizeController, Assembly-CSharp
+        m_MethodName: TogglePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1111103606970960190
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +708,8 @@ MonoBehaviour:
   fontSizeStep: 0.2
   minFontSize: 4
   maxFontSize: 10
+  panel: {fileID: 7694814459912290536}
+  epsilon: 0.01
 --- !u!1 &1164825563407283590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2472,7 +2486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1944947403479273092
 RectTransform:
   m_ObjectHideFlags: 0
