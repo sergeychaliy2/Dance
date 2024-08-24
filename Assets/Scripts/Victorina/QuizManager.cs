@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using LitMotion;
+using LitMotion.Extensions;
 
 public class QuizManager : MonoBehaviour
 {
@@ -8,6 +12,7 @@ public class QuizManager : MonoBehaviour
     public Canvas referenceCanvas; // Канвас для справочного материала
     public TextMeshProUGUI referenceText; // TMP текст для справочного материала
     public TextMeshProUGUI headerText; // TMP текст для заголовка викторины
+    public TextMesh copyHeaderText;
     public Canvas quizCanvas; // Канвас для викторины с вопросами
     public TextMeshProUGUI questionText; // UI элемент для отображения текста вопроса
     public Button[] answerButtons; // Кнопки для выбора ответа
@@ -23,12 +28,16 @@ public class QuizManager : MonoBehaviour
     private float timeRemaining;
     private bool isTimerRunning;
 
+    private readonly CompositeMotionHandle motionHandles = new();
+    private Color animationColor;
+
     void Start()
     {
         if (quizCollection.quizSets.Length > 0)
         {
             defaultColor = answerButtons[0].GetComponent<Image>().color;
-            ShowReferenceMaterial(currentQuizSetIndex); // Сначала отображаем справочный материал
+            ColorUtility.TryParseHtmlString("#FF5353", out animationColor);
+            ShowReferenceMaterial(currentQuizSetIndex);
         }
         else
         {
@@ -60,9 +69,11 @@ public class QuizManager : MonoBehaviour
         {
             QuizSet currentQuizSet = quizCollection.quizSets[quizSetIndex];
 
-            // Устанавливаем заголовок и справочный текст
-            headerText.text = currentQuizSet.setName;
-            referenceText.text = currentQuizSet.referenceMaterial;
+            // Устанавливаем заголовок
+            headerText.text = copyHeaderText.text = currentQuizSet.setName;
+
+            // Запускаем анимацию текста для справочного материала
+            AnimateReferenceText(currentQuizSet.referenceMaterial);
 
             referenceCanvas.gameObject.SetActive(true); // Включаем канвас справочного материала
             quizCanvas.gameObject.SetActive(false); // Отключаем канвас викторины
@@ -73,6 +84,35 @@ public class QuizManager : MonoBehaviour
         else
         {
             Debug.LogError("Неверный индекс викторины!");
+        }
+    }
+
+    void AnimateReferenceText(string textToAnimate)
+    {
+        motionHandles.Complete(); // Останавливаем предыдущие анимации
+
+        referenceText.text = textToAnimate;
+        referenceText.ForceMeshUpdate(true);
+
+        for (var i = 0; i < referenceText.textInfo.characterCount; i++)
+        {
+            LMotion.Create(Vector3.zero, Vector3.one, 0.2f)
+                .WithEase(Ease.OutSine)
+                .WithDelay(i * 0.05f, skipValuesDuringDelay: false)
+                .BindToTMPCharScale(referenceText, i)
+                .AddTo(motionHandles);
+
+            LMotion.Create(-50f, 0f, 0.2f)
+                .WithEase(Ease.OutSine)
+                .WithDelay(i * 0.05f, skipValuesDuringDelay: false)
+                .BindToTMPCharPositionY(referenceText, i)
+                .AddTo(motionHandles);
+
+            LMotion.Create(Color.white, animationColor, 0.2f)
+                .WithEase(Ease.OutSine)
+                .WithDelay(0.3f + i * 0.05f, skipValuesDuringDelay: false)
+                .BindToTMPCharColor(referenceText, i)
+                .AddTo(motionHandles);
         }
     }
 
